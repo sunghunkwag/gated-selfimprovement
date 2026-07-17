@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>gated-selfimprovement — interactive</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden;
+    background: #05070d; font-family: -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif; color: #e8eefc; }
+  #c { position: fixed; inset: 0; display: block; }
+  .hud { position: fixed; pointer-events: none; }
+  #title { top: 22px; left: 26px; }
+  #title h1 { font-size: 22px; letter-spacing: .5px; font-weight: 700; }
+  #title h1 .g { color: #34e5c4; }
+  #title p { margin-top: 5px; font-size: 12.5px; color: #8ea2c8;
+    max-width: 440px; line-height: 1.5; }
+  #legend { bottom: 20px; left: 26px; font-size: 12px; color: #9fb0d4;
+    line-height: 1.9; }
+  #legend b { color: #e8eefc; font-weight: 600; }
+  .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+    margin-right: 7px; vertical-align: middle; }
+  #hint { bottom: 20px; right: 26px; font-size: 11.5px; color: #6c7ea6;
+    text-align: right; line-height: 1.7; }
+  #card { position: fixed; top: 50%; right: 26px; transform: translateY(-50%);
+    width: 320px; background: rgba(12,18,32,.92);
+    border: 1px solid rgba(52,229,196,.35); border-radius: 14px;
+    padding: 20px 22px; backdrop-filter: blur(8px); pointer-events: none;
+    opacity: 0; transition: opacity .35s ease; box-shadow: 0 10px 40px
+    rgba(0,0,0,.5); }
+  #card.show { opacity: 1; }
+  #card .tag { font-size: 10.5px; letter-spacing: 1.5px; text-transform:
+    uppercase; color: #34e5c4; font-weight: 700; }
+  #card h2 { font-size: 17px; margin: 8px 0 4px; }
+  #card .stat { font-size: 30px; font-weight: 800; margin: 10px 0 2px;
+    color: #fff; }
+  #card .sub { font-size: 12px; color: #8ea2c8; }
+  #card p { font-size: 12.5px; color: #b9c6e4; line-height: 1.6;
+    margin-top: 12px; }
+  #footer { position: fixed; top: 22px; right: 26px; font-size: 12px; }
+  #footer a { color: #34e5c4; text-decoration: none; pointer-events: auto;
+    border: 1px solid rgba(52,229,196,.4); padding: 7px 13px;
+    border-radius: 9px; }
+  #footer a:hover { background: rgba(52,229,196,.12); }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div class="hud" id="title">
+  <h1><span class="g">gated</span>-selfimprovement</h1>
+  <p>Recursive self-improvement, measured with counterfactual controls.
+     Every gain must pass a gate that a matched control never sees.
+     LLM-free · pure Python stdlib · deterministic.</p>
+</div>
+
+<div class="hud" id="footer"><a href="https://github.com/sunghunkwag/gated-selfimprovement">View on GitHub ↗</a></div>
+
+<div class="hud" id="legend">
+  <div><span class="dot" style="background:#34e5c4"></span><b>GATED arm</b> — admits self-discovered building blocks (grows)</div>
+  <div><span class="dot" style="background:#5a6785"></span><b>FROZEN arm</b> — identical loop, admission disabled (flat control)</div>
+  <div><span class="dot" style="background:#ffcf5a"></span><b>The gate</b> — counterfactual test: helps at equal budget, or rejected</div>
+</div>
+
+<div class="hud" id="hint">drag to orbit · scroll to zoom<br>click a glowing orb for the result</div>
+
+<div id="card">
+  <div class="tag" id="cTag">result</div>
+  <h2 id="cTitle"></h2>
+  <div class="stat" id="cStat"></div>
+  <div class="sub" id="cSub"></div>
+  <p id="cBody"></p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const results = [
+  { tag:"Compounding RSI", title:"Recursive gains compound",
+    stat:"+1.55 tasks", sub:"5 rounds vs 1 round at 5× compute · p < 1e-4 · n=100",
+    body:"After diagnosing and repairing a mechanism that was measurably harmful (−2.08 vs no learning), recursive self-improvement now compounds — reproduced across two independent environments.",
+    color:0x34e5c4, pos:[-2.6, 3.4, 1.2] },
+  { tag:"MetaForge counterfactual", title:"Searcher improves searcher",
+    stat:"+21%", sub:"adaptive vs FROZEN, equal tasks/budgets/seeds",
+    body:"The searcher mines proposals from its own solutions and self-upgrades through a meta-gate (v0→v3), solving 19→23 tasks. The frozen counterfactual stays flat at 19 for all 8 waves.",
+    color:0x34e5c4, pos:[2.7, 3.0, -0.8] },
+  { tag:"Open-ended loop", title:"Certified novel behaviours",
+    stat:"189 vs 0", sub:"4,444 generations · OPEN vs CLOSED, same budget",
+    body:"Behaviours provably inexpressible by the base system (exact catalog membership). The admission-disabled control produces exactly zero, forever — expansion comes only through the gate.",
+    color:0x7ad9ff, pos:[-3.4, 1.4, -1.6] },
+  { tag:"Turing-complete substrate", title:"Real branches & loops",
+    stat:"15 vs 0 macros", sub:"stack VM with JZ / LOOP / MAP / FOLD · 8 seeds",
+    body:"The same loop ported onto a universal VM (not straight-line list ops). Every admitted macro passed a counterfactual gate; the control admits none. Held-out algorithms like reverse fall out.",
+    color:0x7ad9ff, pos:[3.3, 1.5, 1.5] },
+  { tag:"Cross-substrate transfer", title:"Skills generalize across media",
+    stat:"+2.00 tasks", sub:"transfer p=0.0008 · learning premium p=0.014",
+    body:"A skill discovered on an arithmetic substrate lets a structure-only substrate — which cannot express arithmetic natively — solve tasks it scores 0 on. Beats random-capability controls.",
+    color:0xffcf5a, pos:[0.0, 4.6, -2.2] },
+  { tag:"Gate integrity (SDT)", title:"Which gates resist wireheading",
+    stat:"3 failure modes", sub:"holdout n=40 · domain-independent",
+    body:"Closed goals go vacuous (40/40); self-editable anchors wirehead (ramp 0.75→0.97); only a fixed anchor + open satisfaction path + criterion-update survives. A safety result about self-modification.",
+    color:0xff8a8a, pos:[0.2, 0.7, 2.9] },
+];
+
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x05070d, 0.055);
+const camera = new THREE.PerspectiveCamera(52, 1, 0.1, 100);
+
+// ---- custom orbit ----
+let az = 0.5, pol = 1.25, rad = 13, tAz = az, tPol = pol, tRad = rad;
+let dragging = false, px = 0, py = 0;
+function applyCam(){
+  pol = Math.max(0.25, Math.min(2.7, pol));
+  camera.position.set(
+    rad*Math.sin(pol)*Math.cos(az), rad*Math.cos(pol),
+    rad*Math.sin(pol)*Math.sin(az));
+  camera.lookAt(0, 2.0, 0);
+}
+canvas.addEventListener('pointerdown', e=>{dragging=true; px=e.clientX; py=e.clientY;});
+addEventListener('pointerup', ()=>dragging=false);
+addEventListener('pointermove', e=>{
+  if(!dragging) return;
+  tAz -= (e.clientX-px)*0.006; tPol -= (e.clientY-py)*0.006;
+  px=e.clientX; py=e.clientY;
+});
+canvas.addEventListener('wheel', e=>{ e.preventDefault();
+  tRad = Math.max(7, Math.min(22, tRad + e.deltaY*0.01)); }, {passive:false});
+
+// ---- lights ----
+scene.add(new THREE.AmbientLight(0x445577, 0.7));
+const p1 = new THREE.PointLight(0x34e5c4, 1.1, 40); p1.position.set(-4,7,4); scene.add(p1);
+const p2 = new THREE.PointLight(0xffcf5a, 0.9, 40); p2.position.set(0,3,0); scene.add(p2);
+const p3 = new THREE.PointLight(0x5a6785, 0.6, 40); p3.position.set(5,6,-4); scene.add(p3);
+
+// ---- ground grid ----
+const grid = new THREE.GridHelper(40, 40, 0x1b2740, 0x121a2c);
+grid.position.y = -0.01; scene.add(grid);
+
+// ---- the gate (torus portal) ----
+const gate = new THREE.Mesh(
+  new THREE.TorusGeometry(1.6, 0.12, 24, 80),
+  new THREE.MeshStandardMaterial({color:0xffcf5a, emissive:0xffb020,
+    emissiveIntensity:1.4, metalness:0.6, roughness:0.3}));
+gate.position.set(0, 2.2, 0); gate.rotation.x = Math.PI/2; scene.add(gate);
+const gateGlow = new THREE.Mesh(
+  new THREE.TorusGeometry(1.6, 0.34, 16, 60),
+  new THREE.MeshBasicMaterial({color:0xffcf5a, transparent:true, opacity:0.10}));
+gateGlow.position.copy(gate.position); gateGlow.rotation.x = Math.PI/2; scene.add(gateGlow);
+
+// ---- particles flowing up through the gate ----
+const N = 900;
+const pg = new THREE.BufferGeometry();
+const pp = new Float32Array(N*3), pv = new Float32Array(N);
+for(let i=0;i<N;i++){
+  const a = Math.random()*Math.PI*2, r = Math.random()*1.4;
+  pp[i*3]=Math.cos(a)*r; pp[i*3+1]=Math.random()*7; pp[i*3+2]=Math.sin(a)*r;
+  pv[i]=0.008+Math.random()*0.03;
+}
+pg.setAttribute('position', new THREE.BufferAttribute(pp,3));
+const particles = new THREE.Points(pg, new THREE.PointsMaterial({
+  color:0x9ff5e4, size:0.06, transparent:true, opacity:0.8,
+  blending:THREE.AdditiveBlending, depthWrite:false}));
+scene.add(particles);
+
+// ---- GATED tower (grows) & FROZEN tower (flat) ----
+function tower(x, color, emissive){
+  const g = new THREE.Group(); g.position.x = x; scene.add(g);
+  const nodes = [];
+  for(let i=0;i<9;i++){
+    const m = new THREE.Mesh(new THREE.BoxGeometry(0.9,0.42,0.9),
+      new THREE.MeshStandardMaterial({color, emissive,
+        emissiveIntensity:0.0, metalness:0.5, roughness:0.35}));
+    m.position.y = 0.24 + i*0.5; m.scale.setScalar(0.001);
+    g.add(m); nodes.push(m);
+  }
+  return nodes;
+}
+const gated = tower(-4.2, 0x1e6f63, 0x34e5c4);
+const frozen = tower(4.2, 0x2a3350, 0x5a6785);
+
+// base labels via sprites
+function label(text, x, y, z, col){
+  const cv = document.createElement('canvas'); cv.width=256; cv.height=64;
+  const ctx = cv.getContext('2d');
+  ctx.font='bold 34px sans-serif'; ctx.fillStyle=col; ctx.textAlign='center';
+  ctx.fillText(text, 128, 44);
+  const tx = new THREE.CanvasTexture(cv);
+  const sp = new THREE.Sprite(new THREE.SpriteMaterial({map:tx, transparent:true}));
+  sp.position.set(x,y,z); sp.scale.set(2.2,0.55,1); scene.add(sp);
+}
+label('GATED', -4.2, 0.0, 0, '#34e5c4');
+label('FROZEN', 4.2, 0.0, 0, '#8ea2c8');
+
+// ---- clickable result orbs ----
+const orbs = [];
+results.forEach((r,i)=>{
+  const o = new THREE.Mesh(new THREE.SphereGeometry(0.28, 32, 32),
+    new THREE.MeshStandardMaterial({color:r.color, emissive:r.color,
+      emissiveIntensity:0.9, metalness:0.3, roughness:0.2}));
+  o.position.set(r.pos[0], r.pos[1], r.pos[2]); o.userData = {r, i};
+  scene.add(o);
+  const halo = new THREE.Mesh(new THREE.SphereGeometry(0.44, 24, 24),
+    new THREE.MeshBasicMaterial({color:r.color, transparent:true,
+      opacity:0.14, blending:THREE.AdditiveBlending, depthWrite:false}));
+  o.add(halo);
+  orbs.push(o);
+});
+
+// ---- raycast click ----
+const ray = new THREE.Raycaster(), mouse = new THREE.Vector2();
+let selected = -1;
+function pick(e){
+  mouse.x = (e.clientX/innerWidth)*2-1;
+  mouse.y = -(e.clientY/innerHeight)*2+1;
+  ray.setFromCamera(mouse, camera);
+  const hit = ray.intersectObjects(orbs, false);
+  if(hit.length){ showCard(hit[0].object.userData); }
+}
+let downX=0, downY=0;
+canvas.addEventListener('pointerdown', e=>{downX=e.clientX; downY=e.clientY;});
+canvas.addEventListener('pointerup', e=>{
+  if(Math.abs(e.clientX-downX)<5 && Math.abs(e.clientY-downY)<5) pick(e);
+});
+const card = document.getElementById('card');
+function showCard({r,i}){
+  selected = i;
+  document.getElementById('cTag').textContent = r.tag;
+  document.getElementById('cTitle').textContent = r.title;
+  document.getElementById('cStat').textContent = r.stat;
+  document.getElementById('cStat').style.color = '#fff';
+  document.getElementById('cSub').textContent = r.sub;
+  document.getElementById('cBody').textContent = r.body;
+  card.style.borderColor = '#'+r.color.toString(16).padStart(6,'0')+'66';
+  card.classList.add('show');
+}
+
+// ---- resize ----
+function resize(){
+  const w=innerWidth, h=innerHeight;
+  renderer.setSize(w,h); camera.aspect=w/h; camera.updateProjectionMatrix();
+}
+addEventListener('resize', resize); resize();
+
+// ---- animate ----
+let t=0, growGated=0, growFrozen=0;
+function loop(){
+  requestAnimationFrame(loop);
+  t += 0.016;
+  az += (tAz-az)*0.08; pol += (tPol-pol)*0.08; rad += (tRad-rad)*0.08;
+  applyCam();
+
+  // gate pulse
+  const pulse = 1 + Math.sin(t*2.2)*0.05;
+  gate.scale.setScalar(pulse); gate.rotation.z = t*0.4;
+  gateGlow.scale.setScalar(pulse*(1+Math.sin(t*1.3)*0.08));
+  gate.material.emissiveIntensity = 1.2 + Math.sin(t*2.2)*0.4;
+
+  // particles rise through gate, recycle
+  const pos = pg.attributes.position.array;
+  for(let i=0;i<N;i++){
+    pos[i*3+1] += pv[i]*2.2;
+    if(pos[i*3+1] > 7){
+      const a=Math.random()*Math.PI*2, r=Math.random()*1.4;
+      pos[i*3]=Math.cos(a)*r; pos[i*3+1]=0; pos[i*3+2]=Math.sin(a)*r;
+    }
+  }
+  pg.attributes.position.needsUpdate = true;
+
+  // gated tower grows to full; frozen stays low (2 nodes)
+  growGated = Math.min(9, growGated + 0.03);
+  growFrozen = Math.min(2, growFrozen + 0.02);
+  gated.forEach((m,i)=>{
+    const on = i < growGated;
+    const target = on ? 1 : 0.001;
+    m.scale.x += (target-m.scale.x)*0.1;
+    m.scale.y += (target-m.scale.y)*0.1;
+    m.scale.z += (target-m.scale.z)*0.1;
+    m.material.emissiveIntensity = on ? 0.5+Math.sin(t*2+i)*0.25 : 0;
+  });
+  frozen.forEach((m,i)=>{
+    const on = i < growFrozen;
+    const target = on ? 1 : 0.001;
+    m.scale.x += (target-m.scale.x)*0.1;
+    m.scale.y += (target-m.scale.y)*0.1;
+    m.scale.z += (target-m.scale.z)*0.1;
+    m.material.emissiveIntensity = on ? 0.12 : 0;
+  });
+
+  // orbs bob & spin; selected one brighter
+  orbs.forEach((o,i)=>{
+    o.position.y += Math.sin(t*1.5+i*1.7)*0.0016;
+    o.rotation.y += 0.01;
+    o.material.emissiveIntensity = (i===selected? 1.6 : 0.9)
+      + Math.sin(t*2+i)*0.15;
+    const s = i===selected ? 1.25 : 1.0;
+    o.scale.x += (s-o.scale.x)*0.1; o.scale.y=o.scale.x; o.scale.z=o.scale.x;
+  });
+
+  renderer.render(scene, camera);
+}
+loop();
+// auto-open the headline result after a moment
+setTimeout(()=>showCard({r:results[4], i:4}), 1400);
+</script>
+</body>
+</html>
