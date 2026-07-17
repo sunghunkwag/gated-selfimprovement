@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+runs/
+runs_shared/
+runs_open/
+*state*.json
+base_sigs.json
+ladder_cache.json
+ladder_checkpoint.json
+.DS_Store
+*.tmp
