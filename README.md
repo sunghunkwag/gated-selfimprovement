@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="hero.svg" alt="gated-selfimprovement — animated overview" width="100%">
+  <img src="hero.svg" alt="gated-self-improvement — animated overview" width="100%">
 </p>
 
-<h1 align="center">gated-selfimprovement</h1>
+<h1 align="center">gated-self-improvement</h1>
 
 <p align="center">
   <b>Recursive self-improvement, measured with counterfactual controls.</b><br>
