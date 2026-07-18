@@ -1,109 +1,99 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 460" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 480" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#070b16"/><stop offset="1" stop-color="#0b1020"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#080c18"/><stop offset="1" stop-color="#0b1122"/>
     </linearGradient>
-    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
-      <stop offset="0" stop-color="#ffcf5a" stop-opacity="0.5"/>
-      <stop offset="1" stop-color="#ffcf5a" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="gt" x1="0" y1="1" x2="0" y2="0">
-      <stop offset="0" stop-color="#12463f"/><stop offset="1" stop-color="#34e5c4"/>
-    </linearGradient>
-    <linearGradient id="fz" x1="0" y1="1" x2="0" y2="0">
-      <stop offset="0" stop-color="#1a2136"/><stop offset="1" stop-color="#4a577a"/>
+    <linearGradient id="openrib" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#1c6f63"/><stop offset="1" stop-color="#34e5c4"/>
     </linearGradient>
   </defs>
-  <rect width="1200" height="460" fill="url(#bg)"/>
-  <g stroke="#16203a" stroke-width="1" opacity="0.7">
-    <line x1="0" y1="380" x2="1200" y2="380"/><line x1="0" y1="405" x2="1200" y2="405"/>
-    <line x1="0" y1="432" x2="1200" y2="432"/>
-    <line x1="250" y1="370" x2="120" y2="460"/><line x1="470" y1="370" x2="430" y2="460"/>
-    <line x1="730" y1="370" x2="770" y2="460"/><line x1="950" y1="370" x2="1080" y2="460"/>
+  <rect width="1200" height="480" fill="url(#bg)"/>
+
+  <text x="60" y="66" fill="#e8eefc" font-size="34" font-weight="800"><tspan fill="#34e5c4">gated</tspan>-selfimprovement</text>
+  <text x="62" y="94" fill="#8ea2c8" font-size="14.5">Certified novel behaviours over 4,444 generations — measured, LLM-free, counterfactually controlled.</text>
+
+  <polygon points="250,380 827,380 977,310 400,310" fill="#0e1730" stroke="#1b2848" stroke-width="1"/>
+  <g stroke="#17223c" stroke-width="1">
+    <line x1="250" y1="380" x2="400" y2="310"/>
+    <line x1="394" y1="380" x2="544" y2="310"/>
+    <line x1="538" y1="380" x2="688" y2="310"/>
+    <line x1="682" y1="380" x2="832" y2="310"/>
+    <line x1="827" y1="380" x2="977" y2="310"/>
+  </g>
+  <g stroke="#141d34" stroke-width="1">
+    <line x1="250" y1="315" x2="827" y2="315"/>
+    <line x1="250" y1="250" x2="827" y2="250"/>
+    <line x1="250" y1="185" x2="827" y2="185"/>
+    <line x1="250" y1="120" x2="827" y2="120"/>
+  </g>
+  <line x1="250" y1="380" x2="250" y2="108" stroke="#2a3a5c" stroke-width="1.5"/>
+  <g fill="#6c7ea6" font-size="11" text-anchor="end">
+    <text x="242" y="384">0</text>
+    <text x="242" y="319">50</text>
+    <text x="242" y="254">100</text>
+    <text x="242" y="189">150</text>
+    <text x="242" y="124">200</text>
+  </g>
+  <text x="130" y="240" fill="#8ea2c8" font-size="12" transform="rotate(-90 130 240)">certified novel behaviours</text>
+  <line x1="250" y1="380" x2="827" y2="380" stroke="#2a3a5c" stroke-width="1.5"/>
+  <g fill="#6c7ea6" font-size="11" text-anchor="middle">
+    <text x="250" y="400">0</text>
+    <text x="394" y="400">1000</text>
+    <text x="538" y="400">2000</text>
+    <text x="682" y="400">3000</text>
+    <text x="827" y="400">4444 gen</text>
   </g>
 
-  <!-- FROZEN tower: flat, dim, static -->
-  <g transform="translate(880,40)">
-    <rect x="-45" y="300" width="90" height="40" rx="4" fill="url(#fz)" opacity="0.9"/>
-    <rect x="-45" y="258" width="90" height="40" rx="4" fill="url(#fz)" opacity="0.85"/>
-    <text x="0" y="372" fill="#8ea2c8" font-size="15" font-weight="700" text-anchor="middle" letter-spacing="1">FROZEN</text>
-    <text x="0" y="244" fill="#5a6785" font-size="12" text-anchor="middle">admission off · flat</text>
+  <polyline points="400,310 544,310 688,310 832,310"
+    fill="none" stroke="#4a577a" stroke-width="3" stroke-linejoin="round" opacity="0.9"
+    stroke-dasharray="600" stroke-dashoffset="600">
+    <animate attributeName="stroke-dashoffset" from="600" to="0" dur="2.2s" fill="freeze"/>
+  </polyline>
+  <text x="905" y="314" fill="#8ea2c8" font-size="13" font-weight="700" opacity="0">
+    CLOSED · 0
+    <animate attributeName="opacity" from="0" to="1" begin="2.2s" dur="0.5s" fill="freeze"/>
+  </text>
+
+  <polygon points="250,380 282,380 315,371 380,275 510,235 660,198 770,161 827,134 827,380"
+    fill="#34e5c4" opacity="0.10"/>
+  <polyline points="250,380 282,380 315,371 380,275 510,235 660,198 770,161 827,134"
+    fill="none" stroke="url(#openrib)" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"
+    stroke-dasharray="900" stroke-dashoffset="900">
+    <animate attributeName="stroke-dashoffset" from="900" to="0" begin="0.4s" dur="2.6s" fill="freeze"/>
+  </polyline>
+  <g fill="#7ffbe6">
+    <circle cx="315" cy="371" r="0"><animate attributeName="r" values="0;4" begin="0.9s" dur="0.3s" fill="freeze"/></circle>
+    <circle cx="380" cy="275" r="0"><animate attributeName="r" values="0;4" begin="1.3s" dur="0.3s" fill="freeze"/></circle>
+    <circle cx="510" cy="235" r="0"><animate attributeName="r" values="0;4" begin="1.7s" dur="0.3s" fill="freeze"/></circle>
+    <circle cx="660" cy="198" r="0"><animate attributeName="r" values="0;4" begin="2.1s" dur="0.3s" fill="freeze"/></circle>
+    <circle cx="770" cy="161" r="0"><animate attributeName="r" values="0;4" begin="2.5s" dur="0.3s" fill="freeze"/></circle>
+    <circle cx="827" cy="134" r="0"><animate attributeName="r" values="0;5.5" begin="2.9s" dur="0.35s" fill="freeze"/></circle>
   </g>
+  <text x="843" y="130" fill="#34e5c4" font-size="15" font-weight="800" opacity="0">
+    OPEN · 189
+    <animate attributeName="opacity" from="0" to="1" begin="3.1s" dur="0.5s" fill="freeze"/>
+  </text>
 
-  <!-- GATED tower: blocks grow in one by one, then glow-pulse -->
-  <g transform="translate(300,40)">
-    <g>
-      <rect x="-45" y="300" width="90" height="40" rx="4" fill="url(#gt)">
-        <animate attributeName="opacity" values="0;1;1" keyTimes="0;0.08;1" dur="9s" repeatCount="indefinite"/>
-      </rect>
-      <rect x="-45" y="258" width="90" height="40" rx="4" fill="url(#gt)">
-        <animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.12;0.2;1" dur="9s" repeatCount="indefinite"/>
-      </rect>
-      <rect x="-45" y="216" width="90" height="40" rx="4" fill="url(#gt)">
-        <animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.24;0.32;1" dur="9s" repeatCount="indefinite"/>
-      </rect>
-      <rect x="-45" y="174" width="90" height="40" rx="4" fill="url(#gt)">
-        <animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.36;0.44;1" dur="9s" repeatCount="indefinite"/>
-      </rect>
-      <rect x="-45" y="132" width="90" height="40" rx="4" fill="url(#gt)">
-        <animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.48;0.56;1" dur="9s" repeatCount="indefinite"/>
-      </rect>
-      <rect x="-45" y="90" width="90" height="40" rx="4" fill="url(#gt)">
-        <animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.6;0.68;1" dur="9s" repeatCount="indefinite"/>
-      </rect>
-    </g>
-    <text x="0" y="372" fill="#34e5c4" font-size="15" font-weight="700" text-anchor="middle" letter-spacing="1">GATED</text>
-    <text x="0" y="76" fill="#8ff0dd" font-size="12" text-anchor="middle" opacity="0">
-      admits self-found blocks
-      <animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.68;0.76;1" dur="9s" repeatCount="indefinite"/>
-    </text>
-  </g>
+  <text x="250" y="440" fill="#9fb0d4" font-size="13">
+    Same loop, same budget. <tspan fill="#34e5c4" font-weight="700">OPEN</tspan> admits self-discovered building blocks through a counterfactual gate;
+  </text>
+  <text x="250" y="459" fill="#9fb0d4" font-size="13">
+    <tspan fill="#8ea2c8" font-weight="700">CLOSED</tspan> (admission disabled) provably cannot leave the base system — and never does.
+  </text>
 
-  <!-- THE GATE: pseudo-3D spinning torus + pulsing glow -->
-  <g transform="translate(595,235)">
-    <ellipse cx="0" cy="0" rx="130" ry="130" fill="url(#glow)">
-      <animate attributeName="opacity" values="0.7;1;0.7" dur="3s" repeatCount="indefinite"/>
-    </ellipse>
-    <g>
-      <ellipse cx="0" cy="0" rx="70" ry="30" fill="none" stroke="#ffcf5a" stroke-width="7" opacity="0.95">
-        <animate attributeName="rx" values="70;18;70" dur="6s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1"/>
-      </ellipse>
-      <ellipse cx="0" cy="0" rx="70" ry="30" fill="none" stroke="#fff3cf" stroke-width="2" opacity="0.7">
-        <animate attributeName="rx" values="70;18;70" dur="6s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1"/>
-      </ellipse>
-      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="24s" repeatCount="indefinite"/>
+  <g font-size="12.5" font-weight="600" opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="3.3s" dur="0.6s" fill="freeze"/>
+    <g transform="translate(1000,150)">
+      <rect x="-4" y="-20" width="184" height="28" rx="14" fill="#0e1a2c" stroke="#34e5c4" stroke-opacity="0.4"/>
+      <text x="12" y="0" fill="#cfe8e2">transfer +2.00 · p=8e-4</text>
     </g>
-    <text x="0" y="72" fill="#ffcf5a" font-size="12.5" font-weight="600" text-anchor="middle">THE GATE — counterfactual test</text>
-
-    <g fill="#9ff5e4">
-      <circle cx="-18" r="2.4"><animate attributeName="cy" values="120;-150" dur="3.2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.95;0" dur="3.2s" repeatCount="indefinite"/></circle>
-      <circle cx="12" r="2"><animate attributeName="cy" values="120;-150" dur="2.7s" begin="0.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.85;0" dur="2.7s" begin="0.5s" repeatCount="indefinite"/></circle>
-      <circle cx="-30" r="1.8"><animate attributeName="cy" values="120;-150" dur="3.8s" begin="1.1s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.75;0" dur="3.8s" begin="1.1s" repeatCount="indefinite"/></circle>
-      <circle cx="28" r="1.7"><animate attributeName="cy" values="120;-150" dur="3s" begin="1.6s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.7;0" dur="3s" begin="1.6s" repeatCount="indefinite"/></circle>
-      <circle cx="0" r="2.2"><animate attributeName="cy" values="120;-150" dur="2.4s" begin="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.9;0" dur="2.4s" begin="2s" repeatCount="indefinite"/></circle>
-      <circle cx="-8" r="1.5"><animate attributeName="cy" values="120;-150" dur="3.5s" begin="0.9s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.6;0" dur="3.5s" begin="0.9s" repeatCount="indefinite"/></circle>
-      <circle cx="20" r="1.5"><animate attributeName="cy" values="120;-150" dur="4s" begin="2.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.6;0" dur="4s" begin="2.4s" repeatCount="indefinite"/></circle>
+    <g transform="translate(1000,190)">
+      <rect x="-4" y="-20" width="184" height="28" rx="14" fill="#0e1a2c" stroke="#34e5c4" stroke-opacity="0.4"/>
+      <text x="12" y="0" fill="#cfe8e2">MetaForge +21% vs frozen</text>
     </g>
-  </g>
-
-  <text x="60" y="72" fill="#e8eefc" font-size="38" font-weight="800" letter-spacing="0.5"><tspan fill="#34e5c4">gated</tspan>-selfimprovement</text>
-  <text x="62" y="102" fill="#8ea2c8" font-size="15.5">Recursive self-improvement, measured with counterfactual controls. LLM-free · pure-Python · deterministic.</text>
-
-  <g font-size="13" font-weight="600">
-    <g transform="translate(62,132)" opacity="0">
-      <rect width="196" height="30" rx="15" fill="#0e1a2c" stroke="#34e5c4" stroke-opacity="0.4"/>
-      <text x="16" y="20" fill="#cfe8e2">transfer +2.00 · p=0.0008</text>
-      <animate attributeName="opacity" values="0;1;1" keyTimes="0;0.1;1" dur="9s" repeatCount="indefinite"/>
-    </g>
-    <g transform="translate(270,132)" opacity="0">
-      <rect width="150" height="30" rx="15" fill="#0e1a2c" stroke="#34e5c4" stroke-opacity="0.4"/>
-      <text x="16" y="20" fill="#cfe8e2">MetaForge +21%</text>
-      <animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.15;0.25;1" dur="9s" repeatCount="indefinite"/>
-    </g>
-    <g transform="translate(432,132)" opacity="0">
-      <rect width="182" height="30" rx="15" fill="#0e1a2c" stroke="#7ad9ff" stroke-opacity="0.4"/>
-      <text x="16" y="20" fill="#cfe8e2">open-ended 189 vs 0</text>
-      <animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.3;0.4;1" dur="9s" repeatCount="indefinite"/>
+    <g transform="translate(1000,230)">
+      <rect x="-4" y="-20" width="184" height="28" rx="14" fill="#0e1a2c" stroke="#7ad9ff" stroke-opacity="0.4"/>
+      <text x="12" y="0" fill="#cfe8e2">compounding p&lt;1e-4 · n=100</text>
     </g>
   </g>
 </svg>
