@@ -6,7 +6,7 @@ channels that were closed: a growing substrate, a self-renewing curriculum,
 and non-collapsing gates. Design references: omniforge XIX certified operator
 admission; the user's own `Target_RSI_BOLD` capacity-growth loop and
 `omega_engine` warmup curriculum (found on the local PC); SDT-layer gate
-findings. Implementation: `openforge.py` (English, deterministic, resumable).
+findings. Implementation: `src/openforge.py` (English, deterministic, resumable).
 
 ## Headline metric — machine-certified, zero heuristics
 
@@ -70,16 +70,16 @@ target (the frontier) renews but the gate itself is fixed. Minted tasks are
 solvable by construction (generated from an executable pipe) and admitted to
 the frontier only if the CURRENT solver fails a quick-screen (minimal
 criterion, POET-style). Everything is deterministic and resumable
-(`openforge_state_*.json`); per-generation records in `experiments_log.jsonl`
+(`openforge_state_*.json`); per-generation records in `results/logs/experiments_log.jsonl`
 under `"exp": "openforge"`.
 
 ## Reproduce / extend
 
 ```
-python3 openforge.py basesigs 34          # one-time exact base catalog
-python3 openforge.py run OPEN 1 100 30    # resume/extend seed 1
-python3 openforge.py run CLOSED 1 60 30   # ablation arm
-python3 openforge.py report
+python3 src/openforge.py basesigs 34          # one-time exact base catalog
+python3 src/openforge.py run OPEN 1 100 30    # resume/extend seed 1
+python3 src/openforge.py run CLOSED 1 60 30   # ablation arm
+python3 src/openforge.py report
 ```
 
 Natural next step: a Kaggle 9-hour session (the same push pipeline is already

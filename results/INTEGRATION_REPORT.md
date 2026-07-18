@@ -69,4 +69,4 @@ The 74 unresolved RSI tests are slow, not shown broken; running them needs an en
 
 `integration_test.py` (suite) · `leapforge_ladder.py` (shim, the integration deliverable) · `ladder_builder.py` (checkpointed ladder builder) · `rsi_shard_runner.py` (sharded acceptance runner) · `integration_results.json` (machine-readable results) · `rsi_acceptance_detail.json` (per-test RSI detail) · `runs_shared/ladder_cache.json` (the shared certified ladder) · the six modules under importable names.
 
-Reproduce with: `python3 integration_test.py` (all tests) or `python3 integration_test.py T5 T7` (subset).
+Reproduce with: `python3 experiments/integration_test.py` (all tests) or `python3 experiments/integration_test.py T5 T7` (subset).
