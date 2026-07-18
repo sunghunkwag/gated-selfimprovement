@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/hero.svg" alt="gated-selfimprovement" width="100%">
+  <img src="hero.svg" alt="gated-selfimprovement — animated overview" width="100%">
 </p>
 
 <h1 align="center">gated-selfimprovement</h1>
@@ -10,16 +10,14 @@
 </p>
 
 <p align="center">
-  <a href="https://sunghunkwag.github.io/gated-selfimprovement/"><b>▶ Live interactive 3D demo</b></a> &nbsp;·&nbsp;
-  <a href="https://deepwiki.com/sunghunkwag/gated-selfimprovement"><b>📖 DeepWiki</b></a> &nbsp;·&nbsp;
-  <a href="results/"><b>📊 Full results</b></a>
+  <a href="https://deepwiki.com/sunghunkwag/gated-selfimprovement"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"></a>
 </p>
 
 <p align="center">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue.svg"></a>
-  <img src="https://img.shields.io/badge/python-stdlib%20only-3776ab.svg">
-  <img src="https://img.shields.io/badge/LLM-free-34e5c4.svg">
-  <img src="https://img.shields.io/badge/deterministic-yes-success.svg">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue.svg" alt="Apache-2.0"></a>
+  <img src="https://img.shields.io/badge/python-stdlib%20only-3776ab.svg" alt="stdlib only">
+  <img src="https://img.shields.io/badge/LLM-free-34e5c4.svg" alt="LLM-free">
+  <img src="https://img.shields.io/badge/deterministic-yes-success.svg" alt="deterministic">
 </p>
 
 ---
@@ -30,12 +28,13 @@ Most "recursive self-improvement" (RSI) projects **assert** a result. This one *
 it — and reports the nulls as loudly as the wins. Every claimed improvement must pass a
 **counterfactual gate**: it has to help *at equal compute, on held-out tasks, with identical
 random streams*, versus a matched control that is denied exactly the one mechanism under test.
-No neural networks, no API calls — the engines are a few thousand lines of pure Python that run
-offline and reproduce bit-for-bit.
+No neural networks, no API calls — the engines are pure Python that runs offline and reproduces
+bit-for-bit.
 
-The one-picture idea (the live demo above animates it): two arms run the **same** improvement
+The animated banner above shows the one-picture idea: two arms run the **same** improvement
 loop. The **GATED** arm may admit building blocks it discovers about itself; the **FROZEN** arm
-cannot. The gap between them — never the raw number — is the evidence.
+cannot. The gap between them — never the raw number — is the evidence. (A fully interactive 3D
+version — drag to orbit, click the result orbs — is in `index.html`; open it in any browser.)
 
 ## Results at a glance
 
@@ -52,7 +51,7 @@ cannot. The gap between them — never the raw number — is the evidence.
 beat the untrained baseline (the container's ceiling); the meta-RL grid is a full null; open-ended
 growth is linear, not accelerating, and eventually hits a *search-dilution* wall; cross-substrate
 transfer is behavioural, and deep *composition* of a transferred skill is limited by its I/O
-interface. Details in [`results/`](results/).
+interface. Details in the `*_RESULTS.md` files.
 
 ## The core discipline
 
@@ -68,34 +67,33 @@ interface. Details in [`results/`](results/).
 
 ```bash
 # no dependencies — Python 3.8+ standard library only
-python3 src/tforge.py selftest              # VM: branches, loops, halting, crash-safety
-python3 src/transferforge.py run 1 11 300   # cross-substrate transfer (n=11)
-python3 src/transferforge.py report
-python3 src/omniforge.py selftest           # unified model: 4 engines on one substrate
-python3 src/omniforge.py upgrade report2    # compounding-RSI battery report
+python3 tforge.py selftest              # VM: branches, loops, halting, crash-safety
+python3 transferforge.py run 1 11 300   # cross-substrate transfer (n=11)
+python3 transferforge.py report
+python3 omniforge.py selftest           # unified model: 4 engines on one substrate
+python3 omniforge.py upgrade report2    # compounding-RSI battery report
 ```
 
-Long-horizon batteries run on any free CPU box (or the Kaggle kernels in
-[`experiments/kaggle/`](experiments/kaggle/)) — all offline, no GPU.
+Long-horizon batteries run on any free CPU box (or the Kaggle kernels
+`*_kaggle.py` / `omniforge_full_battery.py`) — all offline, no GPU.
 
-## Repository layout
+## Key files
 
-```
-src/            engines (all runnable, LLM-free, stdlib only)
-  omniforge.py       unified model: shared substrate + 4 search engines + meta-RL + RSI upgrade + a separate stack-VM RSI system
-  tforge.py          Turing-complete substrate (branches, data-dependent loops)
-  openforge.py       open-ended improvement loop (vocabulary growth + self-curriculum)
-  transferforge.py   cross-substrate skill transfer experiment
-  rsi_upgrade.py     the repaired compounding-RSI mechanism (also embedded in omniforge)
-  sdt_layer.py       reflective-endorsement / gate-integrity experiment
-experiments/    verification suite, drivers, and the Kaggle long-run kernels
-results/        per-experiment write-ups + raw logs (jsonl)
-docs/           the interactive 3D demo (GitHub Pages) + hero graphic
-```
+| File | Role |
+|---|---|
+| `omniforge.py` | unified model: shared substrate + 4 search engines + meta-RL + RSI upgrade + a separate stack-VM RSI system |
+| `tforge.py` | Turing-complete substrate (branches, data-dependent loops) |
+| `openforge.py` | open-ended improvement loop (vocabulary growth + self-curriculum) |
+| `transferforge.py` | cross-substrate skill transfer experiment |
+| `rsi_upgrade.py` | the repaired compounding-RSI mechanism |
+| `sdt_layer.py` | reflective-endorsement / gate-integrity experiment |
+| `index.html` | the interactive 3D demo (open locally in any browser) |
+| `*_RESULTS.md` | per-experiment write-ups; `experiments_log.jsonl` raw records |
+| `Home.md` … `FAQ.md` | wiki pages (architecture, methodology, reproducing, FAQ) |
 
 ## How to read a claim here
 
-Pick any headline. Find its `results/*.md`. It will tell you: the exact contrast, the control it
+Pick any headline. Find its `*_RESULTS.md`. It will tell you: the exact contrast, the control it
 was measured against, the budget both arms shared, the seed count, the permutation p-value, and
 the boundary of what it does *not* show. If a claim can't survive that, it isn't in the table.
 
